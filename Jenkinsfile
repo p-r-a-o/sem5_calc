@@ -23,6 +23,16 @@ pipeline {
             }
         }
         
+        stage('Setup Python') {
+            steps {
+                echo 'Installing Python3...'
+                sh '''
+                    apt-get update
+                    apt-get install -y python3 python3-pip python3-venv
+                '''
+            }
+        }
+        
         stage('Create Virtual Environment') {
             steps {
                 echo 'Setting up Python virtual environment...'
@@ -117,4 +127,5 @@ pipeline {
             cleanWs()
         }
     }
+
 }
