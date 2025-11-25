@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11-slim'
-            args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-        }
-    }
+    agent any
     
     environment {
         // Update these values with your Docker Hub username and desired image name
@@ -122,3 +117,4 @@ pipeline {
         }
     }
 }
+
