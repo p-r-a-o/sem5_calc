@@ -1,11 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11-slim'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+        }
+    }
     
     environment {
         // Update these values with your Docker Hub username and desired image name
         IMAGE = "pramatharao/sem5_calc_imt2023116:latest"
         VENV = ".venv"
-        PYTHON = "/usr/bin/python3"
         CONTAINER_NAME = "calculator-cli"
     }
     
@@ -23,21 +27,11 @@ pipeline {
             }
         }
         
-        stage('Setup Python') {
-            steps {
-                echo 'Installing Python3...'
-                sh '''
-                    apt-get update
-                    apt-get install -y python3 python3-pip python3-venv
-                '''
-            }
-        }
-        
         stage('Create Virtual Environment') {
             steps {
                 echo 'Setting up Python virtual environment...'
                 sh '''
-                    $PYTHON -m venv $VENV
+                    python3 -m venv $VENV
                     $VENV/bin/pip install --upgrade pip
                 '''
             }
@@ -127,5 +121,4 @@ pipeline {
             cleanWs()
         }
     }
-
 }
